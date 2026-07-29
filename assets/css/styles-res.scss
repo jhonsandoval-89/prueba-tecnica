@@ -87,6 +87,9 @@ header {
 // Respuestas
 .respuestas {
     padding: 5% 5% 0;
+    &:last-child{
+        margin-bottom:5%;
+    }
 
     &__box {
         h2 {
