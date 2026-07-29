@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./assets/css/styles-res.css">
+    <link rel="stylesheet" href="./assets/css/styles-res4.css">
+    </link>
+    <title>4. Componente interactivo sin JavaScript</title>
+</head>
+
+<body>
+    <header>
+        <div class="titulo">
+            <h1 id="products-title">Tab sin JavaScript</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Regresar</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="contenedor contenedor--mod">
+        <div class="main">
+            <section class="legal" aria-labelledby="legal-title">
+                <h2 id="legal-title">Términos y condiciones</h2>
+                <details class="legal__accordion">
+                    <summary class="legal__summary">
+                        Ver términos y condiciones de la promoción
+                    </summary>
+                    <div class="legal__content">
+                        <p>
+                            La promoción aplica únicamente para reservas realizadas entre el
+                            1 y el 31 de agosto de 2026. Está sujeta a disponibilidad y no es
+                            acumulable con otras ofertas.
+                        </p>
+                        <p>
+                            El descuento se aplica únicamente sobre la tarifa base y no incluye
+                            impuestos, tasas aeroportuarias ni servicios adicionales.
+                        </p>
+                        <p>
+                            La empresa se reserva el derecho de modificar o cancelar la promoción
+                            sin previo aviso cuando existan causas de fuerza mayor o cambios en las
+                            condiciones comerciales.
+                        </p>
+                    </div>
+                </details>
+                <h2>Solución</h2>
+                <p>He usado details y summary para esta solucion del tab, dado que ya es nativo del sistema o navegador y gestiona automáticamente el estado de apertura o cierre. Adicional a esto he usado CSS para personalizar si vista del lado del cliente.</p>
+                <h3>Limitantes</h3>
+                <p>Al no usar funcionalidades de javascript nos limitamos a que los tabs no pueden tener funcionalidades de cierres automáticos al querer ejecutar o abrir otro tab.</p>
+                <p>
+                    Es mas facil con JavaScript crear animaciones mas complejas
+                </p>
+                <p>
+                    El uso de las apis son fundamentales a la hora de consumir datos para hacer mas dinámico el sitio web.
+                </p>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

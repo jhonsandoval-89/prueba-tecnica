@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+// Variables
+$font-family: "Montserrat",
+sans-serif;
+$color-primary: #3f5eb9;
+$color-black: #000;
+$color-grayClear:#f5f2f2;
+$transition: .5s;
+
+// Reset
+* {
+    font-family: $font-family;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    box-sizing: border-box;
+
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    
+}
+
+strong {
+    font-weight: 600;
+}
+
+
+// Header
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100vw;
+    position: fixed;
+    background: $color-grayClear;
+    padding: 0 5%;
+    z-index: 9999;
+
+    .titulo {
+        h1 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+    }
+
+    nav {
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+
+            li {
+                a {
+                    padding: 0 10px;
+                    color: $color-primary;
+                    text-decoration: none;
+                    transition: $transition;
+
+                    &:hover {
+                        font-size: 18px;
+                        color: $color-black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Contenedores
+.contenedor {
+    margin: 0 auto;
+    height: auto;
+    padding: 5% 0 0 0;
+
+    &--mod {
+        max-width: 1200px;
+    }
+}
+
+// Respuestas
+.respuestas {
+    padding: 5% 5% 0;
+
+    &__box {
+        h2 {
+            color: $color-primary;
+        }
+
+        h3 {
+            color: $color-primary;
+        }
+
+        h4 {
+            font-weight: 600;
+        }
+
+        span {
+            font-size: 0.8rem;
+            color: $color-primary;
+            word-break: break-all;
+        }
+
+        ol {
+            li {
+                margin-bottom: 10px;
+            }
+        }
+
+        .button {
+            display: inline-block;
+            padding: 0.9rem 2rem;
+            background: #0056d6;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color .3s ease,
+                transform .3s ease;
+
+            &:hover {
+                background: #003ea3;
+                transform: translateY(-2px);
+            }
+
+            &:focus-visible {
+                outline: 3px solid #ffd54f;
+                outline-offset: 4px;
+            }
+        }
+    }
+}

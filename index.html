@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./assets/css/styles-res.css">
+    </link>
+    <title>1. Optimización y performance web</title>
+</head>
+
+<body>
+    <header>
+        <div class="titulo">
+            <h1>Prueba de conocimiento</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#p1">Punto 1</a></li>
+                <li><a href="#p2">Punto 2</a></li>
+                <li><a href="#p3">Punto 3</a></li>
+                <li><a href="#p4">Punto 4</a></li>
+                <li><a href="#p5">Punto 5</a></li>
+                <li><a href="#p6">Punto 6</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="contenedor contenedor--mod">
+        <main>
+            <section id="p1" class="respuestas">
+                <div class="respuestas__box">
+                    <h2>1. Optimización y performance web</h2>
+                    <p>El equipo reporta que los banners de campaña en la home se ven borrosos en pantallas grandes (monitores de escritorio y TV), aunque en móvil se ven nítidos. Las imágenes se sirven desde Cloudinary con una transformación fija en la URL: c_fit,w_1200.</p>
+                    <p>a) Explica a qué se debe este problema y por qué ocurre solo en pantallas grandes.</p>
+                    <p>b) Propón al menos dos soluciones concretas para corregirlo, considerando que las imágenes se insertan desde un CMS propio sin acceso a JavaScript.</p>
+                    <p>c) Además de este caso, menciona 4 medidas generales que aplicarías para mejorar el performance (PageSpeed/Lighthouse) de un sitio de contenido con muchas imágenes y componentes visuales (banners, cards), sin depender de frameworks de JS.</p>
+                </div>
+                <div class="respuestas__box">
+                    <h3>Respuestas</h3>
+                    <h4>a) Causa del problema</h4>
+                    <p>
+                        El parametro c_fit, w_1200 va aentregar siempre una imagen de tamaño 1200, el problema en general es que si la resolucion o tamaño del monitor es mayor a 1200 el navegado va a redimensionar esta imagen ocasionando un desenfoque o perdida de informacion en la imagen.
+                    </p>
+                    <p>
+                        En dispositivos móviles la imagen tiende a reducirse, causando tambien perdida de información en la imagen. Esto no es tan optimo cuando esta imágen contiene texto.
+                    </p>
+                    <h4>b) Soluciones</h4>
+                    <p>
+                        Podemos usar <strong>srcset + sizes</strong> donde se pueden configurar multiples transformaciones.
+                    </p>
+                    <p>
+                        Ejemplo:<br>
+                        <span>
+                            &lt;img src="https://res.cloudinary.com/demo/image/upload/c_fit,w_1200,f_auto,q_auto/banner.jpg" srcset="
+                            https://res.cloudinary.com/demo/image/upload/c_fit,w_800,f_auto,q_auto/banner.jpg 800w,
+                            https://res.cloudinary.com/demo/image/upload/c_fit,w_1200,f_auto,q_auto/banner.jpg 1200w,
+                            https://res.cloudinary.com/demo/image/upload/c_fit,w_1800,f_auto,q_auto/banner.jpg 1800w,
+                            https://res.cloudinary.com/demo/image/upload/c_fit,w_2400,f_auto,q_auto/banner.jpg 2400w" sizes="100vw" alt="Banner campaña" /&gt;
+                        </span>
+                    </p>
+                    <p>
+                        Usando esto, podemos hacer el navegador use la imagen correcta dependiendo del tamaño del viewport.
+                    </p>
+                    <p>
+                        Otra de las soluciones para este problema sería desde el mediaQuery definiendo el tamaño de la imagen que renderiza de acuerdo al viewport
+                    </p>
+                    <h4>c) Mejoras en el performance</h4>
+                    <ol>
+                        <li><strong>Formato y compresión automática:</strong> podemos usar <storng> f_auto,q_auto</storng>, para que de esta manera el navegador nos sirva imágenes WebP/AVIF segun lo soporte cada navegador en vez de JPEG/PNG. </li>
+                        <li>
+                            <strong>Lazy load:</strong> podemos agregar atributos a img como <strong>loading="lazy"</strong> a todos lo elementos fuera de la vista inicial y <strong>fetchpriority="high"</strong> para banners principales o elementos de primera vista.
+                        </li>
+                        <li>
+                            <strong>Definición de estilos: </strong> Declarar siemte el ancho y alto de las imagenes en css con un aspect-ratio, para que el navegador reserve un espacio antes que cargen los recursos.
+                        </li>
+                        <li>
+                            <strong>Pre load: </strong> <code>&lt;link rel="preconnect"&gt;</code> prar el dominio de Cloudinary/CDN y <code>&lt;link rel="preload" as="image"&gt;</code> para uso del banner principal.
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            <section id="p2" class="respuestas">
+                <div class="respuestas__box">
+                    <h2>2. Refactorización de componente Hero / Banner de campaña</h2>
+                    <p>El siguiente componente presenta problemas de accesibilidad, estructura HTML pobre y estilos no responsivos. Es un banner de campaña similar a los que se despliegan en los 6 sitios regionales.</p>
+                    <span>
+                        &lt;div class="main"&gt;
+                        &lt;div class="box"&gt;
+                        &lt;h2&gt;Ahorra tiempo y gana más con Mi Viaje&lt;/h2&gt;
+                        &lt;p&gt;La plataforma líder en Centroamérica para reservar tus viajes&lt;/p&gt;
+                        &lt;a href="#" class="botonAzul"&gt;Empezar ahora&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;style&gt;
+                        .main {
+                        background: url('https://images.unsplash.com/photo-example.jpg');
+                        height: 600px;
+                        text-align: center;
+                        }
+                        .box {
+                        margin-top: 200px;
+                        color: white;
+                        }
+                        .botonAzul {
+                        background-color: blue;
+                        color: white;
+                        padding: 10px 20px;
+                        }
+                        &lt;/style&gt;
+                    </span>
+                    <h3>
+                        Instrucciones:
+                    </h3>
+                    <ul>
+                        <li>Reestructura el HTML usando etiquetas semánticas (<code> &lt;section&gt,&lt;h1&gt,&lt;p&gt</code>, etc.) y una jerarquía de encabezados correcta para SEO (un único H1 por sección).</li>
+                        <li>Mejora la accesibilidad: contraste de texto, texto alternativo si aplica, foco visible en el enlace/botón, uso correcto de &lt;a&gt; vs &lt;button&gt;.&lt;/button&gt;
+                        <li>Aplica una convención de nombres de clases clara (recomendado: BEM).</li>
+                        <li>Refactoriza el CSS usando Flexbox o Grid para centrar el contenido vertical y horizontalmente, sin alturas ni márgenes fijos en px que rompan en otros tamaños de pantalla.</li>
+                        <li>El diseño debe ser responsive (mobile, tablet, desktop).</li>
+                        <li>El botón/enlace debe tener estados interactivos (hover y focus).</li>
+                        <li>Incluye el atributo loading="lazy" y un alt text semántico para la imagen de fondo si decides moverla a una etiqueta <img>, o explica por qué la dejarías como background.</li>
+                    </ul>
+                </div>
+                <div class="respuestas__box">
+                    <h3>Respuestas</h3>
+                    <a href="rta2.html" class="button">Ver respuesta...</a>
+                </div>
+            </section>
+            <section id="p3" class="respuestas">
+                <div class="respuestas__box">
+                    <h2>3. Componente de Cards responsivo</h2>
+                    <p>Construye una sección de 6 cards de producto (por ejemplo, promociones de vuelos u hoteles), totalmente responsiva:</p>
+                    <ul>
+                        <li> 3 columnas en escritorio, 2 en tablet, 1 en móvil.</li>
+                        <li> HTML semántico y estructura clara (piensa en cómo lo entendería un buscador: título, descripción corta, precio o etiqueta, llamado a la acción).</li>
+                        <li> CSS moderno (Flexbox o Grid), sin frameworks.</li>
+                        <li> Responsive sin media queries innecesarias (usa técnicas modernas como auto-fit/auto-fill si lo consideras adecuado, o media queries mínimas y justifícalas).</li>
+                        <li> Efecto hover simple (sombreado o elevación) en cada card.</li>
+                        <li> Enlaces de card con href funcional (no uses '#') y considera cómo evitarías enlaces rotos (200 OK) en un entorno con 6 sitios regionales.</li>
+                    </ul>
+                </div>
+                <div class="respuestas__box">
+                    <h3>Respuestas</h3>
+                    <a href="rta3.html" class="button">Ver respuesta...</a>
+                </div>
+            </section>
+            <section id="p4" class="respuestas">
+                <div class="respuestas__box">
+                    <h2>4. Componente interactivo sin JavaScript</h2>
+                    <p>El CMS de este cliente bloquea la ejecución de JavaScript en el cuerpo del contenido. Necesitas construir un componente interactivo usando solo HTML y CSS.</p>
+                    <p><strong>Elige una de las dos opciones:</strong></p>
+                    <ul>
+                        <li>Opción A: un acordeón/colapsable para mostrar y ocultar un bloque largo de texto legal (ej. términos y condiciones de una promoción).</li>
+                        <li>Opción B: un filtro de categorías (tabs o botones) que muestre/oculte tarjetas de contenido según la categoría seleccionada (ej. Vuelos, Hoteles, Autos).</li>
+                    </ul>
+                    <p>Explica brevemente qué técnica CSS usarías para lograr el estado interactivo sin JavaScript (por ejemplo, el patrón checkbox/radio + label, o el selector :target), y qué limitaciones tiene ese enfoque frente a una solución con JavaScript.</p>
+                </div>
+                <div class="respuestas__box">
+                    <h3>Respuestas</h3>
+                    <a href="rta4.html" class="button">Ver respuesta...</a>
+                </div>
+            </section>
+            <section id="p5" class="respuestas">
+                <div class="respuestas__box">
+                    <h2>5. SEO on-page: jerarquía, metadatos y alt text</h2>
+                    <p>Te entregan la siguiente estructura, tal como fue montada por otra persona en el sitio de un país:</p>
+                    <span>
+                        &lt;div class="pagina"&gt;<br>
+                        &lt;h3&gt;Promociones&lt;/h3&gt;<br>
+                        &lt;img src="banner-promos.jpg"&gt;<br>
+                        &lt;h1&gt;Vuelos&lt;/h1&gt;<br>
+                        &lt;h1&gt;Hoteles&lt;/h1&gt;<br>
+                        &lt;p&gt;Encuentra las mejores tarifas...&lt;/p&gt;<br>
+                        &lt;h4&gt;Actividades&lt;/h4&gt;<br>
+                        &lt;/div><br>
+                    </span>
+                    <ul>
+                        <li>a) Identifica y corrige los problemas de jerarquía semántica de encabezados en este fragmento (debe existir un único H1 visible por sección, con H2/H3 organizando el contenido debajo).</li>
+                        <li>b) Escribe un texto alternativo (alt) adecuado para la imagen del banner, sin usar el nombre de marca.</li>
+                        <li>c) Redacta un Meta Title (máx. 60 caracteres) y una Meta Description (máx. 155 caracteres) para esta página de promociones de un país específico, orientados a capturar tráfico de cola larga (long-tail), sin depender del nombre de la marca.</li>
+                    </ul>
+                </div>
+                <div class="respuestas__box">
+                    <h3>Respuestas</h3>
+                    <h4>a).</h4>
+                    <span>
+                        &lt;div class="pagina"&gt;<br>
+                        &lt;h1&gt;Promociones&lt;/h1&gt;<br>
+                        &lt;img src="banner-promos.jpg" alt="Los mejores destinos turísticos en colombia con las mejores ofertas"&gt;<br>
+                        &lt;section&gt<br>
+                        &lt;h2&gt;Vuelos&lt;/h2&gt;<br>
+                        &lt;/section&gt<br>
+                        &lt;section&gt<br>
+                        &lt;h2&gt;Hoteles&lt;/h2&gt;<br>
+                        &lt;p&gt;Encuentra las mejores tarifas...&lt;/p&gt;<br>
+                        &lt;/section&gt<br>
+                        &lt;section&gt<br>
+                        &lt;h3&gt;Actividades&lt;/h3&gt;<br>
+                        &lt;/section&gt<br>
+                        &lt;/div><br>
+                    </span>
+                    <h4>b).</h4>
+                    <p>
+                        Los mejores destinos turísticos en colombia con las mejores ofertas
+                    </p>
+                    <h4>c).</h4>
+                    <p>
+                        <strong>Meta title:</strong> Ofertas de vueles y hoteles en Colombia | Descuentos
+                    </p>
+                    <p>
+                        <strong>Meta descripción:</strong> Encuentra las mejores ofertas y pormociones en vuelos, hoteles y actividades en Colombia. Compra con los mejores precios y reserva para tus proximas vacaciones.
+                    </p>
+                </div>
+            </section>
+            <section id="p6" class="respuestas">
+                <div class="respuestas__box">
+                    <h2>6. SEO técnico y medición</h2>
+                    <ul>
+                        <li>a) Explica qué es el archivo hreflang y para qué se usa en un sitio con versiones por país (por ejemplo, seis dominios regionales en Centroamérica). ¿Qué problema de SEO evita?</li>
+                        <li>b) Explica qué es el sitemap.xml, quién suele generarlo en un proyecto con backend propio (Desarrollo), y cuál es tu rol como Webmaster para validar que esté correctamente indexado.</li>
+                        <li>c) ¿Qué herramienta usarías para verificar si una URL nueva fue indexada correctamente por Google, y qué pasos seguirías si detectas que no lo fue?</li>
+                        <li>d) ¿Qué diferencia hay entre un problema de indexación y un problema de performance (Core Web Vitals)? Da un ejemplo de cómo detectarías cada uno.</li>
+                    </ul>
+                </div>
+                <div class="respuestas__box">
+                    <h3>Respuestas</h3>
+                    <h4>a).</h4>
+                    <p>El atributo hreflang indica a los motores de busqueda que version o idioma de una página se debe mostrar segun su región o país</p>
+                    <p>
+                        Cada version puede tener el mismo contenido, pero adaptado a su mercado
+                    </p>
+                    <p><strong>Evita los siguiente problemas SEO</strong></p>
+                    <ul>
+                        <li>Evita que los google identifique todas sus versiones como contenifo duplicado</li>
+                        <li>
+                            Evita que usuarios vena contenido que no pertenece a su región o país
+                        </li>
+                        <li>
+                            Mejora el UX al mostrar la versión relevante de su país
+                        </li>
+                    </ul>
+                    <h4>b).</h4>
+                    <p>
+                        El setemap.xml es un archivo XML, el cual contine una lista de urls que pertenecesn al sitio web y son usadas para la indexación del contenio o de las páginas en los motores de búsqueda. Este archivo lo genera normalmente el equipo de desarrollo.
+                    </p>
+                    <p>
+                        En cuanto al roll ejercido por el web master, se encuentra:
+                        <ul>
+                            <li>
+                                Verificar que el sitemap.xml exista y se pueda acceder a el.
+                            </li>
+                            <li>
+                                Confirmar que las URL mas relevantes se encuentren incluidad
+                            </li>
+                            <li>
+                                Cargarlo en google Search Console
+                            </li>
+                            <li>
+                                Revisar que se procese sin errores
+                            </li>
+                            <li>
+                                Comprobar que las URLS se estén indexando correctamente
+                            </li>
+                        </ul>
+                    </p>
+                    <h4>c).</h4>
+                    <p>
+                        La herramienta que se usa para verificar dicha indexación es Google Seach Console.
+                    </p>
+                    <p>
+                        Para verificar la indexación, verificaría que me responda con HTTP 200 Ok, confirmaría que la etiqueta no tenga noindex, verificar que no tenga bloqueos en robots.txt, verificar si esta incluida en el sitemap.xml, solicitar indexación en google search console y finalmente esperar para verificar su estado de nuevo.</p>
+                    <h4>d).</h4>
+                    <p>
+                        La principal diferencia entre problemas de indexación y uno de performance, es que la página o contenido no se está mostrando en motores de busqueda, el cual requiere revisión desde el sitemap, ejecutando los pasos del punto anterior, para corregirlos.
+                    </p>
+                    <p>
+                        En cambio, un problema de performance, puede influir en los tiempos de carga del sitio web, el cual, se entra a corregir desde la implementación del código hasta la optimización de imágenes.
+                    </p>
+                    <p>
+                        Para poder hacerle seguimiento a esto, podemos usar herramientas como: PageSpeed Insights, Core Web Vitals en google search console y lighthouse.
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

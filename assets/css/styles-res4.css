@@ -1,0 +1,42 @@
+@charset "UTF-8";
+.legal {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem; }
+  .legal h2 {
+    margin-bottom: 1rem; }
+  .legal__accordion {
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white; }
+  .legal__summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    transition: background-color .3s; }
+    .legal__summary:hover {
+      background: #ececec; }
+    .legal__summary:focus-visible {
+      outline: 3px solid #0056d6;
+      outline-offset: -3px; }
+    .legal__summary::-webkit-details-marker {
+      display: none; }
+    .legal__summary::after {
+      content: "+";
+      float: right;
+      font-size: 1.2rem;
+      transition: transform .3s; }
+  .legal__content {
+    padding: 1.25rem;
+    line-height: 1.6; }
+    .legal__content p:not(:last-child) {
+      margin-bottom: 1rem; }
+
+/* Estado abierto */
+.legal__accordion[open] .legal__summary::after {
+  content: "−"; }
+
+/*# sourceMappingURL=styles-res4.css.map */
